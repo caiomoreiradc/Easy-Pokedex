@@ -7,7 +7,7 @@ module.exports = {
 
   // O ponto de entrada da aplicação
   entry: {
-    index: path.resolve(__dirname, 'src/views', 'index.ts')
+    index: path.resolve(__dirname, 'src/views','tela-inicio', 'tela-inicio.ts')
   },
 
   // Configuração de output do build
@@ -42,7 +42,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: path.resolve(__dirname, 'src/views', 'index.html'),
+      template: path.resolve(__dirname, 'src/views','tela-inicio', 'tela-inicio.html'),
       chunks: ['index']
     }),
 
