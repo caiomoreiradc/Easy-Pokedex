@@ -6,8 +6,23 @@ export class PokemonService {
         const url = `https://pokeapi.co/api/v2/pokemon/${nome}`;
 
         return fetch(url)
-            .then(res => res.json())
+            .then((res: Response): Promise<any> => this.processarRespostas(res))
             .then((obj: any): Pokemon => this.mapearPokemon(obj));
+    }
+
+    selecionarPokemons(): Promise<Pokemon[]>{
+        const url = `https://pokeapi.co/api/v2/pokemon/`;
+
+        return fetch(url)
+            .then((res: Response): Promise<any> => this.processarRespostas(res))
+            .then((obj: any): Promise<Pokemon[]> => this.mapearListaPokemons(obj.results));
+    }
+
+    private processarRespostas(resposta: Response): Promise<any> {
+        if(resposta.ok)
+            return resposta.json();
+
+        throw new Error('Pokémon não encontrado!');
     }
 
     private mapearPokemon(obj: any): Pokemon {
@@ -16,5 +31,13 @@ export class PokemonService {
             nome: obj.name,
             spriteUrl: obj.sprites.front_default
         }
+    }
+
+    private mapearListaPokemons(objetos: any[]): any {
+        
+        const pokemons = 
+            objetos.map(obj => this.selecionarPokemonPorNome(obj.name));
+
+        return Promise.all(pokemons);
     }
 }
